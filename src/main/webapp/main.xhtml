@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html
+  xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:h="http://xmlns.jcp.org/jsf/html"
+  xmlns:f="http://xmlns.jcp.org/jsf/core"
+  xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+  xmlns:p="http://primefaces.org/ui"
+>
+  <f:view>
+    <h:head>
+      <title>Web lab3</title>
+      <link rel="stylesheet" href="assets/css/style.css" />
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <script
+        src="https://cdn.jsdelivr.net/npm/jsxgraph/distrib/jsxgraphcore.js"
+        type="text/javascript"
+        charset="UTF-8"
+      ></script>
+    </h:head>
+    <h:body>
+      <header>
+        <h1>Лабораторная №3</h1>
+        <h2>Тикунов Степан</h2>
+        <div>Вариант: 5219699</div>
+        <div>Группа: P32092</div>
+      </header>
+      <main>
+        <section class="form-wrapper">
+          <h2>Координаты</h2>
+          <h:form>
+            <p>
+              <label for="x">X: </label>
+              <h:selectOneRadio
+                id="x"
+                value="${form.x}"
+                required="true"
+                converterMessage="Должно быть числом"
+                requiredMessage="Обязательное поле"
+              >
+                <f:selectItem itemValue="-4" itemLabel="-4" />
+                <f:selectItem itemValue="-3" itemLabel="-3" />
+                <f:selectItem itemValue="-2" itemLabel="-2" />
+                <f:selectItem itemValue="-1" itemLabel="-1" />
+                <f:selectItem itemValue="0" itemLabel="0" />
+                <f:selectItem itemValue="1" itemLabel="1" />
+                <f:selectItem itemValue="2" itemLabel="2" />
+                <f:selectItem itemValue="3" itemLabel="3" />
+                <f:selectItem itemValue="4" itemLabel="4" />
+                <f:validator validatorId="formValidator" for="x" />
+              </h:selectOneRadio>
+              <h:message for="x" styleClass="error" />
+            </p>
+            <p>
+              <label for="y">Y: </label>
+              <h:inputText
+                id="y"
+                value="${form.y}"
+                required="true"
+                converterMessage="Должно быть числом"
+                requiredMessage="Обязательное поле"
+              >
+                <f:validator validatorId="formValidator" for="y" />
+              </h:inputText>
+              <h:message for="y" styleClass="error" />
+            </p>
+            <p>
+              <label for="r">R: </label>
+              <h:inputHidden
+                id="r"
+                value="${form.r}"
+                required="true"
+                converterMessage="Должно быть числом"
+                requiredMessage="Обязательное поле"
+              >
+                <f:validator validatorId="formValidator" for="r" />
+              </h:inputHidden>
+              <h:commandLink
+                value="1"
+                styleClass="button r-1"
+                onclick="return setR(1);"
+              />
+              <h:commandLink
+                value="2"
+                styleClass="button r-2"
+                onclick="return setR(2);"
+              />
+              <h:commandLink
+                value="3"
+                styleClass="button r-3"
+                onclick="return setR(3);"
+              />
+              <h:commandLink
+                value="4"
+                styleClass="button r-4"
+                onclick="return setR(4);"
+              />
+              <h:commandLink
+                value="5"
+                styleClass="button r-5"
+                onclick="return setR(5);"
+              />
+              <h:message for="r" styleClass="error" />
+            </p>
+
+            <h:commandButton
+              action="${form.submit()}"
+              value="Проверить"
+              styleClass="button"
+            />
+          </h:form>
+        </section>
+        <section class="graph-wrapper">
+          <h2>График</h2>
+          <div id="jxgbox" class="jxgbox"></div>
+          <ui:repeat var="point" value="${resultsManager.results}">
+            <point
+              data-x="${point.x}"
+              data-y="${point.y}"
+              data-r="${point.r}"
+              data-hit="${point.hit}"
+            />
+          </ui:repeat>
+          <p:remoteCommand
+            name="checkArea"
+            action="${form.ajax}"
+            oncomplete="resolveCheckAreaResult(xhr, status, args)"
+          />
+        </section>
+        <section class="results-wrapper">
+          <h2>Предыдущие проверки</h2>
+          <h:dataTable
+            id="results-table"
+            border="1"
+            value="${resultsManager.results}"
+            var="result"
+          >
+            <h:column>
+              <f:facet name="header">X</f:facet>
+              <h:outputText value="${result.x}">
+                <f:convertNumber maxFractionDigits="2" />
+              </h:outputText>
+            </h:column>
+            <h:column>
+              <f:facet name="header">Y</f:facet>
+              <h:outputText value="${result.y}">
+                <f:convertNumber maxFractionDigits="2" />
+              </h:outputText>
+            </h:column>
+            <h:column>
+              <f:facet name="header">R</f:facet>
+              <h:outputText value="${result.r}">
+                <f:convertNumber maxFractionDigits="2" />
+              </h:outputText>
+            </h:column>
+            <h:column>
+              <f:facet name="header">Попадание</f:facet>
+              <h:outputText value="${result.hit ? 'Да' : 'Нет'}" />
+            </h:column>
+            <h:column>
+              <f:facet name="header">Дата</f:facet>
+              <h:outputText value="${result.dateString}" />
+            </h:column>
+            <h:column>
+              <f:facet name="header">Время исполнения</f:facet>
+              <h:outputText value="${result.executionTime} мс" />
+            </h:column>
+          </h:dataTable>
+        </section>
+      </main>
+      <h:form styleClass="navigate">
+        <h:commandButton
+          action="navigateIndex"
+          styleClass="button"
+          value="На стартовую страницу"
+        />
+      </h:form>
+      <footer>ИТМО, 2022</footer>
+      <script type="text/javascript" src="assets/js/graph.js"></script>
+    </h:body>
+  </f:view>
+</html>

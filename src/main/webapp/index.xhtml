@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+<f:view>
+  <h:head>
+    <title>Web lab3</title>
+    <link rel="stylesheet" href="assets/css/style.css"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  </h:head>
+  <h:body>
+    <header>
+      <h1>Лабораторная №3</h1>
+      <h2>Тикунов Степан</h2>
+      <div>Вариант: 5219699</div>
+      <div>Группа: P32092</div>
+    </header>
+    <main>
+      <div class="start-content">
+        <div class="clock" id="time"></div>
+      </div>
+    </main>
+    <h:form styleClass="navigate">
+      <h:commandButton action="navigateMain" styleClass="button" value="К выбору точки" />
+    </h:form>
+    <footer>
+      ИТМО, 2022
+    </footer>
+    <script type="text/javascript" src="assets/js/clock.js"></script>
+  </h:body>
+</f:view>
+</html>
